@@ -11,7 +11,7 @@ class System {
     repulsionStrength = rS;
     radiusOfInfluence = roi;
     restLength = rL;
-    showGrid = true;
+    showGrid = false;
 
     arrange();
     //resetQuadTree();
@@ -30,8 +30,8 @@ class System {
   }
 
   void computeCellSplits() {
-    splitRandomLink();
-    //splitByCurvature();
+    //splitRandomLink();
+    splitByCurvature();
   }
 
   void updateCellForces() {
@@ -48,8 +48,41 @@ class System {
   void draw() {
     //qtree.show();
 
-    for (Cell c : cells)
-      c.draw();
+    for (Cell c : cells) {
+      //c.draw();
+      c.drawWithCurves();
+    }
+  }
+
+  void drawWithCurves() {
+    boolean reachedEnd = false;
+
+    stroke(0);
+    strokeWeight(1);
+    fill(50, 200, 255);
+    curveDetail(8);
+    curveTightness(0);
+
+    Cell c0 = cells.get(0);
+    Cell c = c0.links.get(0);
+    Cell cEnd = c0.links.get(1);
+
+    beginShape();
+    curveVertex(c0.position.x, c0.position.y);
+    curveVertex(c0.position.x, c0.position.y);
+    
+    while (!reachedEnd) {
+      c.hasBeenDrawn = true;
+      curveVertex(c.position.x, c.position.y);
+      Cell l0 = c.links.get(0);
+      Cell l1 = c.links.get(1);
+      c = l1.hasBeenDrawn ? l0 : l1;
+      reachedEnd = c == cEnd;
+    }
+    
+    curveVertex(cEnd.position.x, cEnd.position.y);
+    curveVertex(cEnd.position.x, cEnd.position.y);    
+    endShape(CLOSE);
   }
 
   private void arrange() {

@@ -1,4 +1,4 @@
-ArrayList<Cell> arrangeInSpikes(System system)
+ArrayList<Cell> arrangeInSpikes(System system) //<>//
 {
   int n = 12;
   float s = system.restLength * 2;
@@ -19,7 +19,7 @@ ArrayList<Cell> arrangeInSpikes(System system)
     c.radiusOfInfluence = system.radiusOfInfluence;
     c.roiSq = system.radiusOfInfluence * system.radiusOfInfluence;
     c.restLength = system.restLength;
-    
+
     if (i > 0) {
       Cell link = cells.get(i-1);
       c.addLink(link);
@@ -30,15 +30,15 @@ ArrayList<Cell> arrangeInSpikes(System system)
   Cell last = cells.get(n-1);
   last.addLink(cells.get(0));
 
-  return cells; //<>//
+  return cells;
 }
 
 ArrayList<Cell> arrangeInCircle(System system)
 {
-  int n = 32;
-  float s = system.restLength * 2;
+  int n = 64;
+  float s = system.restLength * 4;
   float food = 0;
-  float threshold = 50;
+  float threshold = 20;
 
   ArrayList<Cell> cells = new ArrayList<Cell>();
 
@@ -54,16 +54,16 @@ ArrayList<Cell> arrangeInCircle(System system)
     c.radiusOfInfluence = system.radiusOfInfluence;
     c.roiSq = system.radiusOfInfluence * system.radiusOfInfluence;
     c.restLength = system.restLength;
-    
+
     if (i > 0) {
       Cell link = cells.get(i-1);
       c.addLink(link);
-    }
+    } 
     cells.add(c);
   }
 
-  Cell last = cells.get(n-1);
-  last.addLink(cells.get(0));
+  Cell first = cells.get(0);
+  first.addLink(cells.get(n-1));
 
   return cells;
 }

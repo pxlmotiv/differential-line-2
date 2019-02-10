@@ -19,7 +19,7 @@ class Cell //<>//
 
   void updateTargets() {
     hasBeenDrawn = false; // Reset flag
-    
+
     springTarget = updateSpringTarget();
     planarTarget = updatePlanarTarget();
     //bulgeTarget = updateBulgeTarget();
@@ -41,14 +41,40 @@ class Cell //<>//
   }
 
   void draw() {
+    pushStyle();
+    strokeWeight(2);
+    stroke(0);
     for (int i = 0; i < links.size(); i++) {
       Cell link = links.get(i);
-      if(!link.hasBeenDrawn)
+      if (!link.hasBeenDrawn)
         line(position.x, position.y, link.position.x, link.position.y);
     }
+    //ellipse(position.x, position.y, 3, 3);
+    popStyle();
+    hasBeenDrawn = true; // flag to avoid drawing links twice
+  }
 
-    //ellipse(position.x, position.y, 2, 2);
-    
+  void drawWithCurves() {
+    pushStyle();
+    strokeWeight(2);
+    stroke(200);
+    curveDetail(8);
+    curveTightness(0);
+
+    beginShape();
+
+    Cell link0 = links.get(0);
+    curveVertex(link0.position.x, link0.position.y);
+    curveVertex(link0.position.x, link0.position.y);
+
+    curveVertex(position.x, position.y);
+
+    Cell link1 = links.get(1);
+    curveVertex(link1.position.x, link1.position.y);
+    curveVertex(link1.position.x, link1.position.y);
+
+    endShape();
+    popStyle();
     hasBeenDrawn = true; // flag to avoid drawing links twice
   }
 
@@ -101,7 +127,7 @@ class Cell //<>//
   private PVector updateBulgeTarget() {
     return new PVector(0, 0);
   }
-  
+
   private PVector updateRepulsiveInfluence() {
     int s = system.cells.size();
 
@@ -124,16 +150,16 @@ class Cell //<>//
 
       if (system.showGrid) {
         pushStyle();
-        strokeWeight(0.5);
-        stroke(255, 50, 50);
+        strokeWeight(1);
+        stroke(255, 50, 50, 64);
         line(position.x, position.y, tCell.position.x, tCell.position.y);
         popStyle();
       }
     }
 
-    return sum; //<>//
+    return sum;
   }
-  
+
   PVector updateRepulsiveInfluence(ArrayList<Cell> cells) {
     int s = cells.size();
 
@@ -158,7 +184,7 @@ class Cell //<>//
       if (system.showGrid && id == 9) {
         pushStyle();
         strokeWeight(0.5);
-        stroke(255, 50, 50);
+        stroke(255, 50, 50, 64);
         line(position.x, position.y, tCell.position.x, tCell.position.y);
         popStyle();
       }
