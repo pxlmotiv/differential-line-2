@@ -16,7 +16,8 @@ ArrayList<Cell> arrangeInSpikes(System system)
     c.planarFactor = system.planarFactor;
     c.bulgeFactor = system.bulgeFactor;
     c.repulsionStrength = system.repulsionStrength;
-    c.radioOfInfluence = system.radioOfInfluence;
+    c.radiusOfInfluence = system.radiusOfInfluence;
+    c.roiSq = system.radiusOfInfluence * system.radiusOfInfluence;
     c.restLength = system.restLength;
     
     if (i > 0) {
@@ -34,8 +35,8 @@ ArrayList<Cell> arrangeInSpikes(System system)
 
 ArrayList<Cell> arrangeInCircle(System system)
 {
-  int n = 18;
-  float s = system.restLength * 1.5;
+  int n = 32;
+  float s = system.restLength * 2;
   float food = 0;
   float threshold = 50;
 
@@ -45,11 +46,13 @@ ArrayList<Cell> arrangeInCircle(System system)
     float x = (cos(float(i) / n * TWO_PI) * s) + start.x;
     float y = (sin(float(i) / n * TWO_PI) * s) + start.y;
     Cell c = new Cell(x, y, food, threshold);
+    c.id = i;
     c.springFactor = system.springFactor;
     c.planarFactor = system.planarFactor;
     c.bulgeFactor = system.bulgeFactor;
     c.repulsionStrength = system.repulsionStrength;
-    c.radioOfInfluence = system.radioOfInfluence;
+    c.radiusOfInfluence = system.radiusOfInfluence;
+    c.roiSq = system.radiusOfInfluence * system.radiusOfInfluence;
     c.restLength = system.restLength;
     
     if (i > 0) {
