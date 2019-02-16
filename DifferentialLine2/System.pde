@@ -1,8 +1,9 @@
-class System {
+class System { //<>//
   ArrayList<Cell> cells;
   QuadTree qtree;
   float springFactor, planarFactor, bulgeFactor, repulsionStrength, radiusOfInfluence, restLength;
   boolean showGrid;
+  int lastId;
 
   System(float sF, float pF, float  bF, float rS, float roi, float rL) {
     springFactor = sF;
@@ -12,6 +13,7 @@ class System {
     radiusOfInfluence = roi;
     restLength = rL;
     showGrid = false;
+    lastId = -1;
 
     arrange();
     //resetQuadTree();
@@ -25,8 +27,8 @@ class System {
   }
 
   void distributeFood() {
-    randomUniformDistribution();
-    //byCurvature();
+    //randomUniformDistribution();
+    byCurvature();
   }
 
   void computeCellSplits() {
@@ -57,7 +59,7 @@ class System {
   void drawWithCurves() {
     boolean reachedEnd = false;
 
-    stroke(0);
+    stroke(10, 140, 200);
     strokeWeight(1);
     fill(50, 200, 255);
     curveDetail(8);
@@ -70,16 +72,28 @@ class System {
     beginShape();
     curveVertex(c0.position.x, c0.position.y);
     curveVertex(c0.position.x, c0.position.y);
-    
+
+    int lastIdChecked = c0.id;
+    c0.hasBeenDrawn = true;
+
     while (!reachedEnd) {
-      c.hasBeenDrawn = true;
       curveVertex(c.position.x, c.position.y);
+      c.hasBeenDrawn = true;
+
       Cell l0 = c.links.get(0);
       Cell l1 = c.links.get(1);
-      c = l1.hasBeenDrawn ? l0 : l1;
-      reachedEnd = c == cEnd;
+
+      if (l1.hasBeenDrawn) {
+        c = l0;
+      } else if (l0.hasBeenDrawn) {
+        c = l1;
+      }
+
+      lastIdChecked = c.id;
+
+      reachedEnd = lastIdChecked == cEnd.id;
     }
-    
+
     curveVertex(cEnd.position.x, cEnd.position.y);
     curveVertex(cEnd.position.x, cEnd.position.y);    
     endShape(CLOSE);

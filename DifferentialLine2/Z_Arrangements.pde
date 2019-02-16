@@ -1,4 +1,4 @@
-ArrayList<Cell> arrangeInSpikes(System system) //<>//
+ArrayList<Cell> arrangeInSpikes(System system) //<>// //<>//
 {
   int n = 12;
   float s = system.restLength * 2;
@@ -19,12 +19,14 @@ ArrayList<Cell> arrangeInSpikes(System system) //<>//
     c.radiusOfInfluence = system.radiusOfInfluence;
     c.roiSq = system.radiusOfInfluence * system.radiusOfInfluence;
     c.restLength = system.restLength;
+    c.id = i;
 
     if (i > 0) {
       Cell link = cells.get(i-1);
       c.addLink(link);
     }
     cells.add(c);
+    system.lastId = c.id;
   }
 
   Cell last = cells.get(n-1);
@@ -35,8 +37,8 @@ ArrayList<Cell> arrangeInSpikes(System system) //<>//
 
 ArrayList<Cell> arrangeInCircle(System system)
 {
-  int n = 64;
-  float s = system.restLength * 4;
+  int n = 33;
+  float s = system.restLength * 3;
   float food = 0;
   float threshold = 20;
 
@@ -60,6 +62,7 @@ ArrayList<Cell> arrangeInCircle(System system)
       c.addLink(link);
     } 
     cells.add(c);
+    system.lastId = c.id;
   }
 
   Cell first = cells.get(0);

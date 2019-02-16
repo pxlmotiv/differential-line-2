@@ -11,13 +11,13 @@ void splitRandomLink() {
         continue;
 
       c.food = 0;
-      c.removeLink(n);
 
       float x = c.position.x + (n.position.x - c.position.x);
       float y = c.position.y + (n.position.y - c.position.y);
 
       Cell newCell = new Cell(x, y, 0, c.foodThreshold);
-
+      system.lastId++;
+      newCell.id = system.lastId;
       newCell.springFactor = system.springFactor;
       newCell.planarFactor = system.planarFactor;
       newCell.bulgeFactor = system.bulgeFactor;
@@ -25,9 +25,10 @@ void splitRandomLink() {
       newCell.radiusOfInfluence = system.radiusOfInfluence;
       newCell.roiSq = system.radiusOfInfluence * system.radiusOfInfluence;
       newCell.restLength = system.restLength;
-
-      newCell.addLink(n);
+      
+      c.removeLink(n);
       newCell.addLink(c);
+      newCell.addLink(n);
 
       system.cells.add(newCell);
     }
@@ -60,6 +61,8 @@ void splitByCurvature() {
       float y = c.position.y + (n.position.y - c.position.y);
 
       Cell newCell = new Cell(x, y, 0, c.foodThreshold);
+      system.lastId++;
+      newCell.id = system.lastId;
       newCell.springFactor = system.springFactor;
       newCell.planarFactor = system.planarFactor;
       newCell.bulgeFactor = system.bulgeFactor;
@@ -67,9 +70,9 @@ void splitByCurvature() {
       newCell.radiusOfInfluence = system.radiusOfInfluence;
       newCell.roiSq = system.radiusOfInfluence * system.radiusOfInfluence;
       newCell.restLength = system.restLength;
-
-      newCell.addLink(n);
+      
       newCell.addLink(c);
+      newCell.addLink(n);      
 
       system.cells.add(newCell);
     }

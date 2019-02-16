@@ -1,4 +1,4 @@
-class Cell //<>//
+class Cell //<>// //<>//
 {
   PVector position;
   float food, foodThreshold;
@@ -15,6 +15,7 @@ class Cell //<>//
     springTarget = planarTarget = bulgeTarget = collisionOffset = new PVector(0, 0);
     repulsionChecked = hasBeenDrawn = false;
     links = new ArrayList<Cell>();
+    id = -1;
   }
 
   void updateTargets() {
