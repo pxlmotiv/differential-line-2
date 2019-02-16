@@ -1,4 +1,4 @@
-class Cell //<>// //<>//
+class Cell //<>//
 {
   PVector position;
   float food, foodThreshold;
@@ -55,30 +55,6 @@ class Cell //<>// //<>//
     hasBeenDrawn = true; // flag to avoid drawing links twice
   }
 
-  void drawWithCurves() {
-    pushStyle();
-    strokeWeight(2);
-    stroke(200);
-    curveDetail(8);
-    curveTightness(0);
-
-    beginShape();
-
-    Cell link0 = links.get(0);
-    curveVertex(link0.position.x, link0.position.y);
-    curveVertex(link0.position.x, link0.position.y);
-
-    curveVertex(position.x, position.y);
-
-    Cell link1 = links.get(1);
-    curveVertex(link1.position.x, link1.position.y);
-    curveVertex(link1.position.x, link1.position.y);
-
-    endShape();
-    popStyle();
-    hasBeenDrawn = true; // flag to avoid drawing links twice
-  }
-
   void addLink(Cell c) {
     links.add(c);
     c.links.add(this);
@@ -125,7 +101,7 @@ class Cell //<>// //<>//
     return new PVector(totalX/float(s), totalY/float(s));
   }
 
-  private PVector updateBulgeTarget() {
+  private PVector updateBulgeTarget() { // still not implemented since it doesn't seem it would impact too much.
     return new PVector(0, 0);
   }
 
@@ -181,14 +157,6 @@ class Cell //<>// //<>//
       PVector offset = diff.normalize().mult(f);
 
       sum.add(offset);
-
-      if (system.showGrid && id == 9) {
-        pushStyle();
-        strokeWeight(0.5);
-        stroke(255, 50, 50, 64);
-        line(position.x, position.y, tCell.position.x, tCell.position.y);
-        popStyle();
-      }
     }
 
     return sum;

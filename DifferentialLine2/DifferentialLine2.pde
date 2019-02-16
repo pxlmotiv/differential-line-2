@@ -4,6 +4,9 @@ PVector start;
 
 void setup() {
   size(1024, 1024, P3D);
+  curveDetail(8);
+  curveTightness(0);
+  smooth(16);
   
   reset();
 }
@@ -14,17 +17,17 @@ void draw() {
   system.update();
   //system.draw();
   system.drawWithCurves();
-  
+
   //saveFrame("gif4/####.png");
 }
 
 void reset() {
-  float springFactor = 0.1;
-  float planarFactor = 0.1; // Bigger straigtens the lines and produces fewer branches.
+  float springFactor = 0.15;
+  float planarFactor = 0.15; // Bigger straigtens the lines and produces fewer branches.
   float bulgeFactor = 1.0; // not used by now
-  float repulsionStrength = 0.75; // Bigger makes faster growth
-  float radiusOfInfluence = 19.0; // Bigger leads to wider paths
-  float restLength = 3.0; // Needs to be less than half of RadiusOfInfluence
+  float repulsionStrength = 0.35; // Bigger makes faster growth
+  float radiusOfInfluence = 10.0; // Bigger leads to wider paths
+  float restLength = 2.5; // Needs to be less than half of RadiusOfInfluence
 
   start = new PVector(width/2.0, height/2.0);
 

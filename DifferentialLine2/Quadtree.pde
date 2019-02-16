@@ -1,4 +1,4 @@
-class QuadTree  //<>// //<>// //<>//
+class QuadTree //<>//
 {
   Rectangle boundary;
   QuadTree parent;

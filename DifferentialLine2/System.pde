@@ -16,7 +16,7 @@ class System { //<>//
     lastId = -1;
 
     arrange();
-    //resetQuadTree();
+    //resetQuadTree(); //QUADTREE disabled for now because couldn't get it to work properly
   }
 
   void update() {
@@ -27,13 +27,13 @@ class System { //<>//
   }
 
   void distributeFood() {
-    //randomUniformDistribution();
-    byCurvature();
+    randomUniformDistribution();
+    //byCurvature();
   }
 
   void computeCellSplits() {
-    //splitRandomLink();
-    splitByCurvature();
+    splitRandomLink();
+    //splitByCurvature();
   }
 
   void updateCellForces() {
@@ -51,19 +51,16 @@ class System { //<>//
     //qtree.show();
 
     for (Cell c : cells) {
-      //c.draw();
-      c.drawWithCurves();
+      c.draw();
     }
   }
 
   void drawWithCurves() {
     boolean reachedEnd = false;
 
-    stroke(10, 140, 200);
-    strokeWeight(1);
-    fill(50, 200, 255);
-    curveDetail(8);
-    curveTightness(0);
+    stroke(48, 66, 63);
+    strokeWeight(2);
+    fill(12, 26, 27);    
 
     Cell c0 = cells.get(0);
     Cell c = c0.links.get(0);
