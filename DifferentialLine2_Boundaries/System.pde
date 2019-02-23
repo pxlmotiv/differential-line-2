@@ -4,6 +4,7 @@ class System { //<>//
   float springFactor, planarFactor, bulgeFactor, repulsionStrength, radiusOfInfluence, restLength;
   boolean showGrid;
   int lastId;
+  Boundary boundary;
 
   System(float sF, float pF, float  bF, float rS, float roi, float rL) {
     springFactor = sF;
@@ -19,6 +20,10 @@ class System { //<>//
     //resetQuadTree(); //QUADTREE disabled for now because couldn't get it to work properly
   }
 
+  void setBoundary(Boundary b) {
+    boundary = b;
+  }
+
   void update() {
     distributeFood();
     computeCellSplits();
@@ -27,8 +32,8 @@ class System { //<>//
   }
 
   void distributeFood() {
-    randomUniformDistribution();
-    //byCurvature();
+    //randomUniformDistribution();
+    byCurvature();
   }
 
   void computeCellSplits() {
@@ -42,7 +47,7 @@ class System { //<>//
     for (int i = 0; i < s; i++) {
       Cell c = cells.get(i);
       c.updateTargets();
-      c.updatePosition();
+      c.updatePosition(boundary);
       //c.repulsionChecked = qtree.findAndCalculateRepulsion(c);
     }
   }  
@@ -58,9 +63,12 @@ class System { //<>//
   void drawWithCurves() {
     boolean reachedEnd = false;
 
-    stroke(255-48, 255-66, 255-63);
-    strokeWeight(1.5);
-    fill(255-12, 255-26, 255-27);    
+    float alpha = 255;
+
+    stroke(207, 189, 182, alpha);
+    strokeWeight(1);
+    //fill(243, 229, 228, alpha);
+    noFill();
 
     Cell c0 = cells.get(0);
     Cell c = c0.links.get(0);

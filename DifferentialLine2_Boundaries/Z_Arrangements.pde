@@ -37,10 +37,10 @@ ArrayList<Cell> arrangeInSpikes(System system) //<>// //<>//
 
 ArrayList<Cell> arrangeInCircle(System system)
 {
-  int n = 128;
-  float s = system.restLength * 7;
+  int n = 64;
+  float s = system.restLength * 6;
   float food = 0;
-  float threshold = 35;
+  float threshold = 30;
 
   ArrayList<Cell> cells = new ArrayList<Cell>();
 
