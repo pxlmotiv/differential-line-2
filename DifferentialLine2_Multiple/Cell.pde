@@ -7,8 +7,10 @@ class Cell //<>//
   ArrayList<Cell> links;
   boolean repulsionChecked, hasBeenDrawn;
   int id;
+  System parentSystem;
 
-  Cell(float x, float y, float _food, float threshold) {
+  Cell(float x, float y, float _food, float threshold, System system) {
+    parentSystem = system;
     position = new PVector(x, y);
     food = _food;
     foodThreshold = threshold;
@@ -118,7 +120,7 @@ class Cell //<>//
   }
 
   private PVector updateRepulsiveInfluence() {
-    int s = system.cells.size();
+    int s = parentSystem.cells.size();
 
     PVector sum =  new PVector(0, 0);
 
@@ -126,7 +128,7 @@ class Cell //<>//
       return sum;
 
     for (int i = 0; i < s; i++) {
-      Cell tCell = system.cells.get(i);
+      Cell tCell = parentSystem.cells.get(i);
 
       if ((tCell == this || tCell == this.links.get(0) || tCell == this.links.get(1)) || (distSq(position, tCell.position) > roiSq))
         continue; 
@@ -137,7 +139,7 @@ class Cell //<>//
 
       sum.add(offset);
 
-      if (system.showGrid) {
+      if (parentSystem.showGrid) {
         pushStyle();
         strokeWeight(1);
         stroke(255, 50, 50, 64);

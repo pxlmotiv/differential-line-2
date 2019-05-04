@@ -1,4 +1,4 @@
-void splitRandomLink() {
+void splitRandomLink(System system) {
   for (int i = 0; i < system.cells.size(); i++) {
     Cell c = system.cells.get(i);
 
@@ -14,7 +14,7 @@ void splitRandomLink() {
       float x = c.position.x + (n.position.x - c.position.x);
       float y = c.position.y + (n.position.y - c.position.y);
 
-      Cell newCell = new Cell(x, y, 0, c.foodThreshold);
+      Cell newCell = new Cell(x, y, 0, c.foodThreshold, system);
       system.lastId++;
       newCell.id = system.lastId;
       newCell.springFactor = system.springFactor;
@@ -34,7 +34,7 @@ void splitRandomLink() {
   }
 }
 
-void splitByCurvature() {  
+void splitByCurvature(System system) {  
   for (int i = 0; i < system.cells.size(); i++) {
     Cell c = system.cells.get(i);
 
@@ -58,7 +58,7 @@ void splitByCurvature() {
       float x = c.position.x + (n.position.x - c.position.x);
       float y = c.position.y + (n.position.y - c.position.y);
 
-      Cell newCell = new Cell(x, y, 0, c.foodThreshold);
+      Cell newCell = new Cell(x, y, 0, c.foodThreshold, system);
       system.lastId++;
       newCell.id = system.lastId;
       newCell.springFactor = system.springFactor;

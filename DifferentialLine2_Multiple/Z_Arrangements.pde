@@ -4,6 +4,7 @@ ArrayList<Cell> arrangeInSpikes(System system) //<>//
   float s = system.arrangementSettings.s;
   float food = system.arrangementSettings.food;
   float threshold = system.arrangementSettings.threshold;
+  PVector start = system.start;
 
   ArrayList<Cell> cells = new ArrayList<Cell>();
 
@@ -11,7 +12,7 @@ ArrayList<Cell> arrangeInSpikes(System system) //<>//
     float rs = i % 2 == 0 ? s * 1.5 : s * 0.5;
     float x = (cos(float(i) / n * TWO_PI) * rs) + start.x;
     float y = (sin(float(i) / n * TWO_PI) * rs) + start.y;
-    Cell c = new Cell(x, y, food, threshold);
+    Cell c = new Cell(x, y, food, threshold, system);
     c.springFactor = system.springFactor;
     c.planarFactor = system.planarFactor;
     c.bulgeFactor = system.bulgeFactor;
@@ -41,13 +42,14 @@ ArrayList<Cell> arrangeInCircle(System system)
   float s = system.arrangementSettings.s;
   float food = system.arrangementSettings.food;
   float threshold = system.arrangementSettings.threshold;
+  PVector start = system.start;
 
   ArrayList<Cell> cells = new ArrayList<Cell>();
 
   for (int i = 0; i < n; i++) {
     float x = (cos(float(i) / n * TWO_PI) * s) + start.x;
     float y = (sin(float(i) / n * TWO_PI) * s) + start.y;
-    Cell c = new Cell(x, y, food, threshold);
+    Cell c = new Cell(x, y, food, threshold, system);
     c.id = i;
     c.springFactor = system.springFactor;
     c.planarFactor = system.planarFactor;

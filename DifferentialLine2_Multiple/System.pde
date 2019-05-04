@@ -4,12 +4,12 @@ class System { //<>//
   boolean showGrid;
   int lastId;
   Boundary boundary;
-  color strokeColor, fillColor;
+  color strokeColor, fillColor, bgColor;
   ArrangementSettings arrangementSettings;
+  Canvas canvas;
+  PVector start;
 
   System(float sF, float pF, float  bF, float rS, float roi, float rL) {
-    strokeColor = color(117, 119, 128);
-    fillColor = color(132, 194, 14);
     springFactor = sF;
     planarFactor = pF;
     bulgeFactor = bF;
@@ -20,6 +20,17 @@ class System { //<>//
     lastId = -1;
   }
 
+  void setColors(color _strokeColor, color _fillColor, color _bgColor) {
+    strokeColor = _strokeColor;
+    fillColor = _fillColor;
+    bgColor = _bgColor;
+  }  
+
+  void setCanvas(float x, float y, float w, float h) {
+    canvas = new Canvas(x, y, w, h);
+    start = canvas.getMidpoint();
+  }
+
   void setBoundary(Boundary b) {
     boundary = b;
   }
@@ -28,21 +39,14 @@ class System { //<>//
     arrangementSettings = s;
   }
 
-  void update() {
-    distributeFood();
-    computeCellSplits();
-    updateCellForces();
-    //resetQuadTree();
-  }
-
   void distributeFood() {
-    randomUniformDistribution();
-    //byCurvature();
+    randomUniformDistribution(this);
+    //byCurvature(this);
   }
 
   void computeCellSplits() {
-    //splitRandomLink();
-    splitByCurvature();
+    //splitRandomLink(this);
+    splitByCurvature(this);
   }
 
   void updateCellForces() {
@@ -63,6 +67,12 @@ class System { //<>//
   }
 
   void drawWithCurves() {
+    pushStyle();
+    fill(bgColor);
+    noStroke();
+    canvas.drawAtLimits();    
+    popStyle();
+
     boolean reachedEnd = false;
 
     float alpha = 255;
