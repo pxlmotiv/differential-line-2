@@ -102,12 +102,12 @@ class QuadTree //<>//
 
     for (Cell candidate : cells) {
       if (candidate == cell && !candidate.repulsionChecked) {
-        ArrayList<Cell> relevantCells = getRelevantCells(cell); //<>// //<>//
+        ArrayList<Cell> relevantCells = getRelevantCells(cell); //<>// //<>// //<>//
 
         PVector colOffset = cell.updateRepulsiveInfluence(relevantCells);
 
         if (!(colOffset.x == 0 && colOffset.y == 0)) 
-          colOffset.mult(cell.repulsionStrength); //<>// //<>//
+          colOffset.mult(cell.repulsionStrength); //<>// //<>// //<>//
 
         cell.collisionOffset = colOffset;
         return true;
@@ -152,7 +152,7 @@ class QuadTree //<>//
 
   private ArrayList<Cell> getRelevantCells(Cell cell)
   {
-    ArrayList<Cell> relCells = new ArrayList<Cell>(); //<>// //<>//
+    ArrayList<Cell> relCells = new ArrayList<Cell>(); //<>// //<>// //<>//
 
     boolean foundBoundary = false;
     QuadTree q = this;
@@ -168,7 +168,7 @@ class QuadTree //<>//
     }
     
     if (q.parent != null) {
-      relCells.addAll(q.parent.cells); //<>// //<>//
+      relCells.addAll(q.parent.cells); //<>// //<>// //<>//
       relCells.addAll(q.parent.getChildrenCells());
     } else {
       relCells.addAll(q.cells);
@@ -179,7 +179,7 @@ class QuadTree //<>//
   }
 
   private ArrayList<Cell> getChildrenCells() {
-    ArrayList<Cell> relCells = new ArrayList<Cell>(); //<>// //<>//
+    ArrayList<Cell> relCells = new ArrayList<Cell>(); //<>// //<>// //<>//
 
     if (this.divided) {
       relCells.addAll(this.northeast.getChildrenCells());

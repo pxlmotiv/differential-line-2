@@ -1,10 +1,10 @@
-int n = 48; //<>//
-float s = system.restLength * 6;
-float food = 0;
-float threshold = 5;
-
-ArrayList<Cell> arrangeInSpikes(System system)
+ArrayList<Cell> arrangeInSpikes(System system) //<>//
 {
+  int n = system.arrangementSettings.n;
+  float s = system.arrangementSettings.s;
+  float food = system.arrangementSettings.food;
+  float threshold = system.arrangementSettings.threshold;
+
   ArrayList<Cell> cells = new ArrayList<Cell>();
 
   for (int i = 0; i < n; i++) {
@@ -37,6 +37,11 @@ ArrayList<Cell> arrangeInSpikes(System system)
 
 ArrayList<Cell> arrangeInCircle(System system)
 {
+  int n = system.arrangementSettings.n;
+  float s = system.arrangementSettings.s;
+  float food = system.arrangementSettings.food;
+  float threshold = system.arrangementSettings.threshold;
+
   ArrayList<Cell> cells = new ArrayList<Cell>();
 
   for (int i = 0; i < n; i++) {
@@ -64,4 +69,16 @@ ArrayList<Cell> arrangeInCircle(System system)
   first.addLink(cells.get(n-1));
 
   return cells;
+}
+
+class ArrangementSettings {
+  int n;
+  float s, food, threshold;
+
+  ArrangementSettings(int _n, float _s, float _food, float _threshold) {
+    n = _n;
+    s = _s;
+    food = _food;
+    threshold = _threshold;
+  }
 }

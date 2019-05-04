@@ -1,12 +1,12 @@
 class System { //<>//
   ArrayList<Cell> cells;
-  QuadTree qtree;
   float springFactor, planarFactor, bulgeFactor, repulsionStrength, radiusOfInfluence, restLength;
   boolean showGrid;
   int lastId;
   Boundary boundary;
   color strokeColor, fillColor;
-  
+  ArrangementSettings arrangementSettings;
+
   System(float sF, float pF, float  bF, float rS, float roi, float rL) {
     strokeColor = color(117, 119, 128);
     fillColor = color(132, 194, 14);
@@ -18,13 +18,14 @@ class System { //<>//
     restLength = rL;
     showGrid = false;
     lastId = -1;
-
-    arrange();
-    //resetQuadTree(); //QUADTREE disabled for now because couldn't get it to work properly
   }
 
   void setBoundary(Boundary b) {
     boundary = b;
+  }
+
+  void setArrangementSettings(ArrangementSettings s) {
+    arrangementSettings = s;
   }
 
   void update() {
@@ -56,8 +57,6 @@ class System { //<>//
   }  
 
   void draw() {
-    //qtree.show();
-
     for (Cell c : cells) {
       c.draw();
     }
@@ -110,12 +109,5 @@ class System { //<>//
   private void arrange() {
     cells = arrangeInCircle(this);
     //cells = arrangeInSpikes(this);
-  }
-
-  private void resetQuadTree() {
-    qtree = new QuadTree(null, new Rectangle(0, 0, width, height), 500);
-
-    for (Cell c : cells)
-      qtree.insert(c);
   }
 }
