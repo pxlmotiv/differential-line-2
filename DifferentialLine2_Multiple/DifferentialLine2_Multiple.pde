@@ -1,10 +1,10 @@
-int AMOUNT_OF_SYSTEMS = 4;
-ArrayList<System> systems = new ArrayList<System>();
-ColorPaletteManager palette = new ColorPaletteManager();
+int amountOfSystems = 0;
+ArrayList<System> systems;
+ColorPaletteManager paletteMgr;
 
 void setup()
 {
-  size(1060, 1060, P3D);
+  size(720, 720, P3D);
   curveDetail(8);
   curveTightness(0);
   smooth(16);
@@ -14,7 +14,7 @@ void setup()
 
 void draw()
 {
-  for (int i = 0; i < AMOUNT_OF_SYSTEMS; i++) {
+  for (int i = 0; i < amountOfSystems; i++) {
     System system = systems.get(i);
     system.distributeFood();
     system.computeCellSplits();
@@ -26,24 +26,40 @@ void draw()
 
 void reset()
 {
-  float[] xCoords = {0, width/2, 0, width/2};
-  float[] yCoords = {height/2, 0, 0, height/2};
+  systems = new ArrayList<System>();
   
-  for (int i = 0; i < AMOUNT_OF_SYSTEMS; i++) {
-    System system = new System(0.5, 0.1, 1, random(1.0, 1.3), 8 + i * 2, 3+i);
+  paletteMgr = new ColorPaletteManager();
+  
+  int cpIndex = floor(random(paletteMgr.palettes.length));  
+  
+  color[] palette = paletteMgr.getAdjustedColorPalette(cpIndex);
+  
+  ArrayList<Canvas> canvases = CreateCanvases(0, 0, width, height, null);
+  
+  amountOfSystems = canvases.size();
+  
+  background(palette[2]);
+  
+  for (int i = 0; i < amountOfSystems; i++) {
+    System system = new System(0.3, 0.1, 1, random(0.85, 1.1), 8, 2);
+    system.canvas = canvases.get(i);
+    system.start = system.canvas.getMidpoint();
+    
+    palette = paletteMgr.getAdjustedColorPalette(cpIndex);
 
-    system.setCanvas(xCoords[i], yCoords[i], width/2, height/2);
-    
-    //color[] colors = palette.getRandomColorPalette();
-    color[] colors = palette.getAdjustedColorPalette(3);
-    
-    system.setColors(colors[0], colors[1], colors[2]);
-    
+    system.setColors(palette[0], palette[1], palette[2]);
+
     //Boundary boundary = new CircularBoundary(system.start.x, system.start.y, 150);
-    Boundary boundary = new RectangularBoundary(system.start.x-200, system.start.y-200, system.start.x+200, system.start.y+200);
+    Boundary boundary = new RectangularBoundary(
+      system.canvas.getMinX() + system.canvas._width*0.1, 
+      system.canvas.getMinY() + system.canvas._height*0.1, 
+      system.canvas.getMaxX() - system.canvas._width*0.1, 
+      system.canvas.getMaxY() - system.canvas._height*0.1
+      );
+
     system.setBoundary(boundary);
 
-    ArrangementSettings arrangeSettings = new ArrangementSettings(floor(random(32, 64)), system.restLength * 6, 0, 5);
+    ArrangementSettings arrangeSettings = new ArrangementSettings(floor(random(48, 64)), system.restLength * 6, 0, 5);
     system.setArrangementSettings(arrangeSettings);
 
     system.arrange();
@@ -56,4 +72,8 @@ void keyPressed()
 {
   if (key == ' ')
     saveFrame("tests/####.png");
+}
+
+void mousePressed() {
+  reset();
 }

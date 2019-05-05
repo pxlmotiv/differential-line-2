@@ -66,3 +66,73 @@ float distSq(PVector p1, PVector p2)
 {
   return (p2.y - p1.y)*(p2.y - p1.y)+(p2.x - p1.x)*(p2.x - p1.x);
 }
+
+ArrayList<Canvas> CreateCanvases(float minX, float minY, float maxX, float maxY, ArrayList<Canvas> canvases) {
+  if (canvases == null)
+    canvases = new ArrayList<Canvas>();
+
+  float difX = (maxX - minX);
+  float difY = (maxY - minY);
+
+  if (difX < 100 || difY < 100) return canvases;
+
+  float rndX = random(minX+difX*0.25, maxX-difX*0.25);
+  float rndY = random(minY+difY*0.25, maxY-difY*0.25);
+
+  int div = round(random(2.75));
+  if (difX > difY*1.5) div = 1;
+  if (difY > difX*1.5) div = 0;
+
+  float divFactor = 0.4;
+
+  if (div == 0) {// horizontal division
+    //rectTop
+    if (random(1) < divFactor)
+      CreateCanvases(minX, minY, maxX, rndY, canvases);
+    else
+      canvases.add(new Canvas(minX, minY, maxX, rndY));
+
+    //rectBottom
+    if (random(1) < divFactor)
+      CreateCanvases(minX, rndY, maxX, maxY, canvases);
+    else
+      canvases.add(new Canvas(minX, rndY, maxX, maxY));
+  } else if (div == 1) {// vertical division
+    //rectLeft
+    if (random(1) < divFactor)
+      CreateCanvases(minX, minY, rndX, maxY, canvases);
+    else
+      canvases.add(new Canvas(minX, minY, rndX, maxY));
+
+    //rectRight
+    if (random(1) < divFactor)
+      CreateCanvases(rndX, minY, maxX, maxY, canvases);
+    else
+      canvases.add(new Canvas(rndX, minY, maxX, maxY));
+  } else if (div == 2) {// bot h and v division
+    //rectTopRight
+    if (random(1) < divFactor)
+      CreateCanvases(rndX, minY, maxX, rndY, canvases);
+    else
+      canvases.add(new Canvas(rndX, minY, maxX, rndY));
+
+    //rectBottomRight
+    if (random(1) < divFactor)
+      CreateCanvases(rndX, rndY, maxX, maxY, canvases);
+    else
+      canvases.add(new Canvas(rndX, rndY, maxX, maxY));    
+
+    //rectBottomLeft
+    if (random(1) < divFactor)
+      CreateCanvases(minX, rndY, rndX, maxY, canvases);
+    else
+      canvases.add(new Canvas(minX, rndY, rndX, maxY));
+
+    //rectTopLeft
+    if (random(1) < divFactor)
+      CreateCanvases(minX, minY, rndX, rndY, canvases);
+    else
+      canvases.add(new Canvas(minX, minY, rndX, rndY));
+  }
+  return canvases;
+}

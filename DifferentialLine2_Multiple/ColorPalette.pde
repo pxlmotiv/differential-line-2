@@ -19,6 +19,27 @@ class ColorPaletteManager
   {
     return palettes[floor(random(palettes.length))];
   }
+  
+  color[] getRandomAdjustedColorPalette()
+  {
+    color[] colors = getRandomColorPalette();
+
+    color c1 = lerpColor(colors[0], colors[1], random(0.15, 0.85));
+    color c2 = lerpColor(colors[1], colors[2], random(0.15, 0.85));
+    color c3 = lerpColor(colors[2], colors[0], random(0.15, 0.85));
+
+    int order = round(random(2));
+
+    if (order == 0) {
+      return new color[]{c1, c2, c3};
+    } else if (order == 1) {
+      return new color[]{c2, c3, c1};
+    } else if (order == 2) {
+      return new color[]{c3, c1, c2};
+    }
+
+    return new color[]{c1, c2, c3};
+  }
 
   color[] getAdjustedColorPalette(int index)
   {
