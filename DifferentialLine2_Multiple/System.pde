@@ -40,13 +40,13 @@ class System { //<>//
   }
 
   void distributeFood() {
-    randomUniformDistribution(this);
-    //byCurvature(this);
+    //randomUniformDistribution(this);
+    byCurvature(this);
   }
 
   void computeCellSplits() {
-    //splitRandomLink(this);
-    splitByCurvature(this);
+    splitRandomLink(this);
+    //splitByCurvature(this);
   }
 
   void updateCellForces() {

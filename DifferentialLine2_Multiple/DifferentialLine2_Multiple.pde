@@ -1,5 +1,6 @@
 int AMOUNT_OF_SYSTEMS = 4;
 ArrayList<System> systems = new ArrayList<System>();
+ColorPaletteManager palette = new ColorPaletteManager();
 
 void setup()
 {
@@ -29,16 +30,20 @@ void reset()
   float[] yCoords = {height/2, 0, 0, height/2};
   
   for (int i = 0; i < AMOUNT_OF_SYSTEMS; i++) {
-    System system = new System(0.5, 0.1, 1, 1.3, 7 + i*2, 3+i);
+    System system = new System(0.5, 0.1, 1, random(1.0, 1.3), 8 + i * 2, 3+i);
 
     system.setCanvas(xCoords[i], yCoords[i], width/2, height/2);
     
-    system.setColors(color(117, 119, 128), color(132, 194, 14), color(26, 30, 39));
+    //color[] colors = palette.getRandomColorPalette();
+    color[] colors = palette.getAdjustedColorPalette(3);
     
-    Boundary boundary = new CircularBoundary(system.start.x, system.start.y, 150);
+    system.setColors(colors[0], colors[1], colors[2]);
+    
+    //Boundary boundary = new CircularBoundary(system.start.x, system.start.y, 150);
+    Boundary boundary = new RectangularBoundary(system.start.x-200, system.start.y-200, system.start.x+200, system.start.y+200);
     system.setBoundary(boundary);
 
-    ArrangementSettings arrangeSettings = new ArrangementSettings(48, system.restLength * 6, 0, 5);
+    ArrangementSettings arrangeSettings = new ArrangementSettings(floor(random(32, 64)), system.restLength * 6, 0, 5);
     system.setArrangementSettings(arrangeSettings);
 
     system.arrange();
