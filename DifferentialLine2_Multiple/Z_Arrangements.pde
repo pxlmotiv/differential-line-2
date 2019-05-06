@@ -32,7 +32,9 @@ ArrayList<Cell> arrangeInSpikes(System system) //<>//
 
   Cell last = cells.get(n-1);
   last.addLink(cells.get(0));
-
+  
+  system.amountOfCells = cells.size();
+  
   return cells;
 }
 
@@ -69,6 +71,8 @@ ArrayList<Cell> arrangeInCircle(System system)
 
   Cell first = cells.get(0);
   first.addLink(cells.get(n-1));
+  
+  system.amountOfCells = cells.size();
 
   return cells;
 }

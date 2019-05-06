@@ -1,6 +1,7 @@
 abstract class Boundary
 {
   public abstract boolean checkCellWithin(Cell cell, PVector target);
+  public abstract int getMaxCellsAllowed(float restLength);
 }
 
 public class RectangularBoundary extends Boundary
@@ -19,6 +20,10 @@ public class RectangularBoundary extends Boundary
   {
     return cell.position.x >= minX && cell.position.x <= maxX && cell.position.y >= minY && cell.position.y <= maxY;
   }
+
+  public int getMaxCellsAllowed(float restLength) {
+    return round( ((maxX - minX) / (restLength * 1.5)) * ((maxY - minY) / (restLength * 1.5)));
+  }
 }
 
 public class CircularBoundary extends Boundary
@@ -35,6 +40,11 @@ public class CircularBoundary extends Boundary
   {
     float dsq = distSq(cell.position, new PVector(x, y));
     return r*r >= dsq;
+  }
+  
+  public int getMaxCellsAllowed(float restLength) {
+    float rr = r / restLength;
+    return floor(PI * rr * rr);
   }
 }
 
@@ -60,6 +70,10 @@ public class RomboidBoundary extends Boundary
     boolean touchedTopLeft = DoLinesIntersect(left, top, cell.position, newPos);
 
     return !touchedTopRight && !touchedBottomRight && !touchedBottomLeft && !touchedTopLeft;
+  }
+  
+  public int getMaxCellsAllowed(float restLength) {
+    return 2000;
   }
 }
 
@@ -91,6 +105,10 @@ public class TriangularBoundary extends Boundary
 
     return !touchedp0 && !touchedp1 && !touchedp2;
   }
+  
+  public int getMaxCellsAllowed(float restLength) {
+    return 2000;
+  }
 }
 
 public class RandomLinesBoundary extends Boundary
@@ -120,5 +138,9 @@ public class RandomLinesBoundary extends Boundary
     }
 
     return true;
+  }
+  
+  public int getMaxCellsAllowed(float restLength) {
+    return 2000;
   }
 }

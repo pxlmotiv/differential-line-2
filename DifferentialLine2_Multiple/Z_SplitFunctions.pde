@@ -1,7 +1,11 @@
 void splitRandomLink(System system) {
-  for (int i = 0; i < system.cells.size(); i++) {
+  int cellsAdded = 0;
+  
+  for (int i = 0; i < system.amountOfCells; i++) {
     Cell c = system.cells.get(i);
-
+    
+    if (c.hasReachedBorder) continue;
+    
     if (c.food >= c.foodThreshold) {
       int ri = floor(random(2));
       Cell n = c.links.get(ri);
@@ -24,19 +28,26 @@ void splitRandomLink(System system) {
       newCell.radiusOfInfluence = system.radiusOfInfluence;
       newCell.roiSq = system.radiusOfInfluence * system.radiusOfInfluence;
       newCell.restLength = system.restLength;
-      
+
       c.removeLink(n);
       newCell.addLink(c);
       newCell.addLink(n);
 
       system.cells.add(newCell);
+      cellsAdded++;
     }
   }
+  
+  system.amountOfCells += cellsAdded;
 }
 
-void splitByCurvature(System system) {  
-  for (int i = 0; i < system.cells.size(); i++) {
+void splitByCurvature(System system) {
+  int cellsAdded = 0;
+  
+  for (int i = 0; i < system.amountOfCells; i++) {
     Cell c = system.cells.get(i);
+
+    if (c.hasReachedBorder) continue;
 
     if (c.food >= c.foodThreshold) {
       Cell l1 = c.links.get(0);
@@ -49,7 +60,7 @@ void splitByCurvature(System system) {
 
       if (((a >= 2.63) || d1 < c.restLength || d2 < c.restLength))
         continue;
-      
+
       Cell n = d1 >= d2 ? l1 : l2;
 
       c.food = 0;
@@ -68,11 +79,14 @@ void splitByCurvature(System system) {
       newCell.radiusOfInfluence = system.radiusOfInfluence;
       newCell.roiSq = system.radiusOfInfluence * system.radiusOfInfluence;
       newCell.restLength = system.restLength;
-      
+
       newCell.addLink(c);
       newCell.addLink(n);      
 
       system.cells.add(newCell);
+      cellsAdded++;
     }
   }
+  
+  system.amountOfCells += cellsAdded;
 }

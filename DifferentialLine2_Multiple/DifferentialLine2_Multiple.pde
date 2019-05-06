@@ -4,7 +4,8 @@ ColorPaletteManager paletteMgr;
 
 void setup()
 {
-  size(720, 720, P3D);
+  size(900, 900, P3D);
+  //fullScreen(P3D);
   curveDetail(8);
   curveTightness(0);
   smooth(16);
@@ -41,25 +42,35 @@ void reset()
   background(palette[2]);
   
   for (int i = 0; i < amountOfSystems; i++) {
-    System system = new System(0.3, 0.1, 1, random(0.85, 1.1), 8, 2);
-    system.canvas = canvases.get(i);
-    system.start = system.canvas.getMidpoint();
+    Canvas canvas = canvases.get(i);
     
+    float springFactor = canvas.suggestSpringFactor();
+    float planarFactor = canvas.suggestPlanarFactor();
+    float repulsionStrength = canvas.suggestRepulsionStrength();
+    float radiusOfInfluence = canvas.suggestRadiusOfInfluece();    
+    float restLength = canvas.suggestRestLength();
+    
+    System system = new System(springFactor, planarFactor, 1, repulsionStrength, radiusOfInfluence, restLength);
+    system.canvas = canvas;
+    system.start = system.canvas.getMidpoint();
+        
     palette = paletteMgr.getAdjustedColorPalette(cpIndex);
 
     system.setColors(palette[0], palette[1], palette[2]);
-
-    //Boundary boundary = new CircularBoundary(system.start.x, system.start.y, 150);
+    //Boundary boundary = new CircularBoundary(system.start.x, system.start.y, min(system.canvas._width, system.canvas._height)*0.5);
+    
     Boundary boundary = new RectangularBoundary(
       system.canvas.getMinX() + system.canvas._width*0.1, 
       system.canvas.getMinY() + system.canvas._height*0.1, 
       system.canvas.getMaxX() - system.canvas._width*0.1, 
       system.canvas.getMaxY() - system.canvas._height*0.1
       );
-
+    
     system.setBoundary(boundary);
+    int startingNodes = canvas.suggestStartingNodes();
+    int foodThreshold = canvas.suggestFoodThreshold();
 
-    ArrangementSettings arrangeSettings = new ArrangementSettings(floor(random(48, 64)), system.restLength * 6, 0, 5);
+    ArrangementSettings arrangeSettings = new ArrangementSettings(startingNodes, system.restLength * 4.5, 0, foodThreshold);
     system.setArrangementSettings(arrangeSettings);
 
     system.arrange();
@@ -74,6 +85,7 @@ void keyPressed()
     saveFrame("tests/####.png");
 }
 
-void mousePressed() {
+void mousePressed()
+{
   reset();
 }

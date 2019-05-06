@@ -5,7 +5,7 @@ class Cell //<>//
   float springFactor, planarFactor, bulgeFactor, repulsionStrength, radiusOfInfluence, restLength, roiSq;
   PVector springTarget, planarTarget, bulgeTarget, collisionOffset;
   ArrayList<Cell> links;
-  boolean repulsionChecked, hasBeenDrawn;
+  boolean repulsionChecked, hasBeenDrawn, hasReachedBorder;
   int id;
   System parentSystem;
 
@@ -22,16 +22,16 @@ class Cell //<>//
 
   void updateTargets() {
     hasBeenDrawn = false; // Reset flag
-
+    
     springTarget = updateSpringTarget();
     planarTarget = updatePlanarTarget();
     //bulgeTarget = updateBulgeTarget();
-    collisionOffset = updateRepulsiveInfluence(); //Updated by the QUADTREE
+    collisionOffset = updateRepulsiveInfluence();
 
     if (!(springTarget.x == 0 && springTarget.y == 0)) springTarget.sub(position).mult(springFactor);
     if (!(planarTarget.x == 0 && planarTarget.y == 0)) planarTarget.sub(position).mult(planarFactor);
     //if (!(bulgeTarget.x == 0 && bulgeTarget.y == 0)) bulgeTarget.sub(position).mult(bulgeFactor);
-    if (!(collisionOffset.x == 0 && collisionOffset.y == 0)) collisionOffset.mult(repulsionStrength); //Updated by the QUADTREE
+    if (!(collisionOffset.x == 0 && collisionOffset.y == 0)) collisionOffset.mult(repulsionStrength);
   }
 
   void updatePosition(Boundary boundary) {
@@ -48,7 +48,10 @@ class Cell //<>//
 
       if (withinBoundaries)
         position.add(sum);
+      else
+        hasReachedBorder = true;
     } else {
+      hasReachedBorder = false;
       position.add(sum);
     }
 
@@ -120,7 +123,7 @@ class Cell //<>//
   }
 
   private PVector updateRepulsiveInfluence() {
-    int s = parentSystem.cells.size();
+    int s = parentSystem.amountOfCells;
 
     PVector sum =  new PVector(0, 0);
 
@@ -146,31 +149,6 @@ class Cell //<>//
         line(position.x, position.y, tCell.position.x, tCell.position.y);
         popStyle();
       }
-    }
-
-    return sum;
-  }
-
-  PVector updateRepulsiveInfluence(ArrayList<Cell> cells) {
-    int s = cells.size();
-
-    PVector sum =  new PVector(0, 0);
-
-    if (s == 0) 
-      return sum;
-
-    for (int i = 0; i < s; i++) {
-      Cell tCell = cells.get(i);
-
-      if ((tCell == this || tCell == this.links.get(0) || tCell == this.links.get(1)) || (dist(position.x, position.y, tCell.position.x, tCell.position.y) > radiusOfInfluence))
-        continue; 
-
-      PVector diff = PVector.sub(position, tCell.position);
-      float roiSq = radiusOfInfluence * radiusOfInfluence;
-      float f = (roiSq - diff.magSq()) / roiSq;
-      PVector offset = diff.normalize().mult(f);
-
-      sum.add(offset);
     }
 
     return sum;

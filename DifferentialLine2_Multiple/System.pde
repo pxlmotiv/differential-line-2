@@ -2,7 +2,7 @@ class System { //<>//
   ArrayList<Cell> cells;
   float springFactor, planarFactor, bulgeFactor, repulsionStrength, radiusOfInfluence, restLength;
   boolean showGrid;
-  int lastId;
+  int lastId, amountOfCells, maxCellsAllowed;
   Boundary boundary;
   color strokeColor, fillColor, bgColor;
   ArrangementSettings arrangementSettings;
@@ -33,6 +33,7 @@ class System { //<>//
 
   void setBoundary(Boundary b) {
     boundary = b;
+    maxCellsAllowed = b.getMaxCellsAllowed(restLength);
   }
 
   void setArrangementSettings(ArrangementSettings s) {
@@ -40,17 +41,19 @@ class System { //<>//
   }
 
   void distributeFood() {
-    //randomUniformDistribution(this);
-    byCurvature(this);
+    if (amountOfCells >= maxCellsAllowed) return;
+    randomUniformDistribution(this);
+    //byCurvature(this);
   }
 
   void computeCellSplits() {
+    if (amountOfCells >= maxCellsAllowed) return;
     splitRandomLink(this);
     //splitByCurvature(this);
   }
 
   void updateCellForces() {
-    int s = cells.size();
+    int s = amountOfCells;
 
     for (int i = 0; i < s; i++) {
       Cell c = cells.get(i);
@@ -77,8 +80,8 @@ class System { //<>//
 
     float alpha = 255;
 
-    stroke(strokeColor, alpha*3);
     strokeWeight(1);
+    stroke(strokeColor, alpha*3);    
     fill(fillColor, alpha);
     //noFill();
 
