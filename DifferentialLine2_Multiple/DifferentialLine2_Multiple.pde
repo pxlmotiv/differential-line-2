@@ -22,7 +22,7 @@ void draw()
     system.updateCellForces();
     system.drawWithCurves();
   }
-  //saveFrame("video/####.png");
+  //saveFrame("video3/####.png");
 }
 
 void reset()
@@ -57,31 +57,8 @@ void reset()
     palette = paletteMgr.getAdjustedColorPalette(cpIndex);
 
     system.setColors(palette[0], palette[1], palette[2]);
-
-    int choosenBoundary = round(random(-0.49, 3.49));
-    Boundary boundary;
-    if (choosenBoundary == 0) {
-      boundary = new CircularBoundary(system.start.x, system.start.y, min(system.canvas._width, system.canvas._height)*0.5);
-    } else if (choosenBoundary == 1) {
-      boundary = new RectangularBoundary(
-        system.canvas.getMinX() + system.canvas._width*0.1, 
-        system.canvas.getMinY() + system.canvas._height*0.1, 
-        system.canvas.getMaxX() - system.canvas._width*0.1, 
-        system.canvas.getMaxY() - system.canvas._height*0.1
-        );
-    } else if (choosenBoundary == 2) {
-      boundary = new TriangularBoundary(system.start.x, system.start.y, min(system.canvas._width, system.canvas._height) * 0.5, random(PI));
-    } else if (choosenBoundary == 3) {
-      boundary = new RomboidBoundary(
-        system.canvas.getMinX(), 
-        system.canvas.getMinY(), 
-        system.canvas.getMinX() + system.canvas._width*0.5, 
-        system.canvas.getMinY() + system.canvas._height*0.5, 
-        system.canvas.getMaxX(), 
-        system.canvas.getMaxY());
-    } else {
-      boundary = new RandomLinesBoundary();
-    }
+    
+    Boundary boundary = buildBoundary(system);
     system.setBoundary(boundary);
 
     int startingNodes = canvas.suggestStartingNodes();
@@ -94,6 +71,36 @@ void reset()
 
     systems.add(system);
   }
+}
+
+Boundary buildBoundary(System system) {
+  int choosenBoundary = round(random(-0.49, 3.49));
+  Boundary boundary;
+  if (choosenBoundary == 0) {
+    boundary = new CircularBoundary(system.start.x, system.start.y, min(system.canvas._width, system.canvas._height) * random(0.33, 0.5));
+  } else if (choosenBoundary == 1) {
+    float margin = min(system.canvas._width*0.1, system.canvas._height*0.1);
+    boundary = new RectangularBoundary(
+      system.canvas.getMinX() + margin, 
+      system.canvas.getMinY() + margin, 
+      system.canvas.getMaxX() - margin, 
+      system.canvas.getMaxY() - margin
+      );
+  } else if (choosenBoundary == 2) {
+    float offset = round(random(3)) * (PI/3.0);
+    boundary = new TriangularBoundary(system.start.x, system.start.y, min(system.canvas._width, system.canvas._height) * 0.5, offset);
+  } else if (choosenBoundary == 3) {
+    boundary = new RomboidBoundary(
+      system.canvas.getMinX(), 
+      system.canvas.getMinY(), 
+      system.canvas.getMinX() + system.canvas._width*0.5, 
+      system.canvas.getMinY() + system.canvas._height*0.5, 
+      system.canvas.getMaxX(), 
+      system.canvas.getMaxY());
+  } else {
+    boundary = new RandomLinesBoundary();
+  }
+  return boundary;
 }
 
 void keyPressed()

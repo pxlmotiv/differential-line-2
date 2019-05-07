@@ -43,7 +43,7 @@ public class CircularBoundary extends Boundary
   }
   
   public int getMaxCellsAllowed(float restLength) {
-    float rr = r / restLength;
+    float rr = r / restLength*1.2;
     return floor(PI * rr * rr);
   }
 }

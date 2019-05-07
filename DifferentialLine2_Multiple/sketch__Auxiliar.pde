@@ -83,7 +83,7 @@ ArrayList<Canvas> CreateCanvases(float minX, float minY, float maxX, float maxY,
   if (difX > difY*1.5) div = 1;
   if (difY > difX*1.5) div = 0;
 
-  float divFactor = 0.4;
+  float divFactor = 0.5;
 
   if (div == 0) {// horizontal division
     //rectTop
