@@ -18,6 +18,7 @@ class System { //<>//
     restLength = rL;
     showGrid = false;
     lastId = -1;
+    maxCellsAllowed = -1;
   }
 
   void setColors(color _strokeColor, color _fillColor, color _bgColor) {
@@ -41,15 +42,15 @@ class System { //<>//
   }
 
   void distributeFood() {
-    if (amountOfCells >= maxCellsAllowed) return;
-    randomUniformDistribution(this);
-    //byCurvature(this);
+    if (maxCellsAllowed != -1 && amountOfCells >= maxCellsAllowed) return;
+    //randomUniformDistribution(this);
+    byCurvature(this);
   }
 
   void computeCellSplits() {
-    if (amountOfCells >= maxCellsAllowed) return;
-    splitRandomLink(this);
-    //splitByCurvature(this);
+    if (maxCellsAllowed != -1 && amountOfCells >= maxCellsAllowed) return;
+    //splitRandomLink(this);
+    splitByCurvature(this);
   }
 
   void updateCellForces() {

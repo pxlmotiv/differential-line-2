@@ -73,7 +73,10 @@ public class RomboidBoundary extends Boundary
   }
   
   public int getMaxCellsAllowed(float restLength) {
-    return 2000;
+    float d1 = dist(right.x, right.y, left.x, left.y);
+    float d2 = dist(top.x, top.y, bottom.x, bottom.y);
+    
+    return round((d1*d2)/2.0);
   }
 }
 
@@ -81,9 +84,9 @@ public class TriangularBoundary extends Boundary
 {
   PVector p0, p1, p2;
 
-  TriangularBoundary(float startX, float startY, float s)
+  TriangularBoundary(float startX, float startY, float s, float _offset)
   {
-    float offset = HALF_PI;
+    float offset = _offset;
     float x0 = (cos(float(0) / 3 * TWO_PI + offset) * s) + startX;
     float y0 = (sin(float(0) / 3 * TWO_PI + offset) * s) + startY;
     float x1 = (cos(float(1) / 3 * TWO_PI + offset) * s) + startX;
@@ -107,7 +110,15 @@ public class TriangularBoundary extends Boundary
   }
   
   public int getMaxCellsAllowed(float restLength) {
-    return 2000;
+    // p0.x(p1.y-p2.y) + p1.x(p0.y-p2.y) + p2.x(p0.y-p1.y) all divided by 2
+    float p0x = p0.x / restLength;
+    float p0y = p0.y / restLength;
+    float p1x = p1.x / restLength;
+    float p1y = p1.y / restLength;
+    float p2x = p2.x / restLength;
+    float p2y = p2.y / restLength;
+    
+    return round(abs( (p0x*(p1y-p2y) + p1x*(p0y-p2y) + p2x*(p0y-p1y) ) / 2));
   }
 }
 
@@ -141,6 +152,6 @@ public class RandomLinesBoundary extends Boundary
   }
   
   public int getMaxCellsAllowed(float restLength) {
-    return 2000;
+    return -1;
   }
 }

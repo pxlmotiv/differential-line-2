@@ -12,7 +12,12 @@ class ColorPaletteManager
     new color[]{ #6B94A8, #EFBEC7, #C54F32 }, 
     new color[]{ #FF9900, #FFCC33, #44001E }, 
     new color[]{ #5B8266, #E4FDE1, #212922 }, 
-    new color[]{ #E4FDE1, #BE7C4D, #1D5F66 }, 
+    new color[]{ #E4FDE1, #BE7C4D, #1D5F66 },
+    new color[]{ #B2DBBF, #F3FFBD, #FF1654 },
+    new color[]{ #70C1B3, #B2DBBF, #247BA0 },
+    new color[]{ #F1FAEE, #A8DADC, #E63946 },
+    new color[]{ #E63946, #F1FAEE, #1D3557 },
+    new color[]{ #EE4266, #FFD23F, #540D6E },
   };
 
   color[] getRandomColorPalette()
