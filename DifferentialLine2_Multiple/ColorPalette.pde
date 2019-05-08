@@ -2,7 +2,7 @@ class ColorPaletteManager
 {
   // strokeColor, fillColor, bgColor 
   color[][] palettes = new color[][]
-    {
+  {
     new color[]{ #FF2400, #F0E130, #242124 }, 
     new color[]{ #13505B, #0C768A, #000000 }, 
     new color[]{ #456990, #EDC487, #241623 }, 
@@ -12,19 +12,23 @@ class ColorPaletteManager
     new color[]{ #6B94A8, #EFBEC7, #C54F32 }, 
     new color[]{ #FF9900, #FFCC33, #44001E }, 
     new color[]{ #5B8266, #E4FDE1, #212922 }, 
-    new color[]{ #E4FDE1, #BE7C4D, #1D5F66 },
-    new color[]{ #B2DBBF, #F3FFBD, #FF1654 },
-    new color[]{ #70C1B3, #B2DBBF, #247BA0 },
-    new color[]{ #F1FAEE, #A8DADC, #E63946 },
-    new color[]{ #E63946, #F1FAEE, #1D3557 },
-    new color[]{ #EE4266, #FFD23F, #540D6E },
+    new color[]{ #E4FDE1, #BE7C4D, #1D5F66 }, 
+    new color[]{ #B2DBBF, #F3FFBD, #FF1654 }, 
+    new color[]{ #70C1B3, #B2DBBF, #247BA0 }, 
+    new color[]{ #F1FAEE, #A8DADC, #E63946 }, 
+    new color[]{ #E63946, #F1FAEE, #1D3557 }, 
+    new color[]{ #EE4266, #FFD23F, #540D6E }, 
+    new color[]{ #95C623, #E55812, #0E4749 }, 
+    new color[]{ #E55812, #002626, #EFE7DA }, 
+    new color[]{ #FF0022, #41EAD4, #011627 }, 
+    new color[]{ #DA0033, #340095, #000000 }
   };
 
   color[] getRandomColorPalette()
   {
     return palettes[floor(random(palettes.length))];
   }
-  
+
   color[] getRandomAdjustedColorPalette()
   {
     color[] colors = getRandomColorPalette();

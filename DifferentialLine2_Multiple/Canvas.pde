@@ -1,4 +1,5 @@
-class Canvas {
+class Canvas
+{
   PVector origin;
   float _width, _height;
 
@@ -18,8 +19,8 @@ class Canvas {
     return new PVector(origin.x + _width/2, origin.y + _height/2);
   }
 
-  void drawAtLimits() {
-    rect(origin.x, origin.y, _width, _height);
+  void drawAtLimits(PGraphics g) {
+    g.rect(origin.x, origin.y, _width, _height);
   }
 
   float getMinX() {
@@ -65,7 +66,7 @@ class Canvas {
 
     return map(minSide, 100, maxSide, 0.1, 0.2);
   }
-  
+
   float suggestSpringFactor() {
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
@@ -79,7 +80,7 @@ class Canvas {
 
     return round(map(minSide, 100, maxSide, 48, 64));
   }
-  
+
   int suggestFoodThreshold() {
     float minSide = min(_width, _height);
     float maxSide = min(width, height);

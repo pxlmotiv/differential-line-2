@@ -60,45 +60,48 @@ class System { //<>//
       Cell c = cells.get(i);
       c.updateTargets();
       c.updatePosition(boundary);
-      //c.repulsionChecked = qtree.findAndCalculateRepulsion(c);
     }
   }  
 
-  void draw() {
+  void draw(PGraphics g) {
     for (Cell c : cells) {
-      c.draw();
+      c.draw(g);
     }
   }
 
-  void drawWithCurves() {
-    pushStyle();
-    fill(bgColor);
-    noStroke();
-    canvas.drawAtLimits();    
-    popStyle();
+  void drawBackground(PGraphics g) {
+    g.pushStyle();
+    g.fill(bgColor);
+    g.noStroke();
+    canvas.drawAtLimits(g);    
+    g.popStyle();
+  }
+
+  void drawWithCurves(PGraphics g) {
+    drawBackground(g);
 
     boolean reachedEnd = false;
 
     float alpha = 255;
 
-    strokeWeight(1);
-    stroke(strokeColor, alpha*3);    
-    fill(fillColor, alpha);
+    g.strokeWeight(1);
+    g.stroke(strokeColor, alpha*3);    
+    g.fill(fillColor, alpha);
     //noFill();
 
     Cell c0 = cells.get(0);
     Cell c = c0.links.get(0);
     Cell cEnd = c0.links.get(1);
 
-    beginShape();
-    curveVertex(c0.position.x, c0.position.y);
-    curveVertex(c0.position.x, c0.position.y);
+    g.beginShape();
+    g.curveVertex(c0.position.x, c0.position.y);
+    g.curveVertex(c0.position.x, c0.position.y);
 
     int lastIdChecked = c0.id;
     c0.hasBeenDrawn = true;
 
     while (!reachedEnd) {
-      curveVertex(c.position.x, c.position.y);
+      g.curveVertex(c.position.x, c.position.y);
       c.hasBeenDrawn = true;
 
       Cell l0 = c.links.get(0);
@@ -115,9 +118,9 @@ class System { //<>//
       reachedEnd = lastIdChecked == cEnd.id;
     }
 
-    curveVertex(cEnd.position.x, cEnd.position.y);
-    curveVertex(cEnd.position.x, cEnd.position.y);    
-    endShape(CLOSE);
+    g.curveVertex(cEnd.position.x, cEnd.position.y);
+    g.curveVertex(cEnd.position.x, cEnd.position.y);    
+    g.endShape(CLOSE);
   }
 
   private void arrange() {

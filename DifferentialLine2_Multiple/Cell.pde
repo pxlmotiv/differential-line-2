@@ -40,7 +40,7 @@ class Cell //<>//
 
     if (!(springTarget.x == 0 && springTarget.y == 0)) sum.add(springTarget);
     if (!(planarTarget.x == 0 && planarTarget.y == 0)) sum.add(planarTarget);
-    //if (!(bulgeTarget.x == 0 && bulgeTarget.y == 0)) position.add(bulgeTarget);
+    //if (!(bulgeTarget.x == 0 && bulgeTarget.y == 0)) sum.add(bulgeTarget);
     if (!(collisionOffset.x == 0 && collisionOffset.y == 0)) sum.add(collisionOffset);
 
     if (boundary != null) {
@@ -58,17 +58,17 @@ class Cell //<>//
     repulsionChecked = false;
   }
 
-  void draw() {
-    pushStyle();
-    strokeWeight(2);
-    stroke(0);
+  void draw(PGraphics g) {
+    g.pushStyle();
+    g.strokeWeight(2);
+    g.stroke(0);
     for (int i = 0; i < links.size(); i++) {
       Cell link = links.get(i);
       if (!link.hasBeenDrawn)
-        line(position.x, position.y, link.position.x, link.position.y);
+        g.line(position.x, position.y, link.position.x, link.position.y);
     }
     //ellipse(position.x, position.y, 3, 3);
-    popStyle();
+    g.popStyle();
     hasBeenDrawn = true; // flag to avoid drawing links twice
   }
 

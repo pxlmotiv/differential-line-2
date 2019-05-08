@@ -18,3 +18,7 @@ DifferentialLine2_Multiple/video/
 DifferentialLine2_Multiple/video2/
 
 DifferentialLine2_Multiple/video3/
+
+*.svg
+
+*.pdf

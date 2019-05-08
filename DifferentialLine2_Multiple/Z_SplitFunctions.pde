@@ -55,10 +55,11 @@ void splitByCurvature(System system) {
       PVector link1 = PVector.sub(l1.position, c.position);
       PVector link2 = PVector.sub(l2.position, c.position);
       float a = PVector.angleBetween(link1, link2);
-      float d1 = dist(l1.position.x, l1.position.y, c.position.x, c.position.y);
-      float d2 = dist(l2.position.x, l2.position.y, c.position.x, c.position.y);
-
-      if (((a >= 2.63) || d1 < c.restLength || d2 < c.restLength))
+      float d1 = distSq(l1.position, c.position);
+      float d2 = distSq(l2.position, c.position);
+      float rlSq = c.restLength*c.restLength;
+      
+      if (((a >= 2.63) || d1 < rlSq || d2 < rlSq))
         continue;
 
       Cell n = d1 >= d2 ? l1 : l2;

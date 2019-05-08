@@ -1,10 +1,13 @@
+import processing.pdf.*;
+import processing.svg.*;
+
 int amountOfSystems = 0;
 ArrayList<System> systems;
 ColorPaletteManager paletteMgr;
 
 void setup()
 {
-  size(900, 900, P3D);
+  size(1600, 900, P3D);
   //fullScreen(P3D);
   curveDetail(8);
   curveTightness(0);
@@ -20,9 +23,9 @@ void draw()
     system.distributeFood();
     system.computeCellSplits();
     system.updateCellForces();
-    system.drawWithCurves();
+    system.drawWithCurves(this.g);
   }
-  //saveFrame("video3/####.png");
+  //saveFrame("header/####.png");
 }
 
 void reset()
@@ -57,7 +60,7 @@ void reset()
     palette = paletteMgr.getAdjustedColorPalette(cpIndex);
 
     system.setColors(palette[0], palette[1], palette[2]);
-    
+
     Boundary boundary = buildBoundary(system);
     system.setBoundary(boundary);
 
@@ -70,6 +73,15 @@ void reset()
     system.arrange();
 
     systems.add(system);
+  }
+  
+  drawBackground(this.g);
+}
+
+void drawBackground(PGraphics g) {
+  for (int i = 0; i < amountOfSystems; i++) {
+    System system = systems.get(i);
+    system.drawBackground(g);
   }
 }
 
@@ -87,8 +99,9 @@ Boundary buildBoundary(System system) {
       system.canvas.getMaxY() - margin
       );
   } else if (choosenBoundary == 2) {
-    float offset = round(random(3)) * (PI/3.0);
-    boundary = new TriangularBoundary(system.start.x, system.start.y, min(system.canvas._width, system.canvas._height) * 0.5, offset);
+    float offset = round(random(6)) * (PI/6.0);
+    float s = min(system.canvas._width, system.canvas._height) * 0.5;
+    boundary = new TriangularBoundary(system.start.x, system.start.y, s, offset);
   } else if (choosenBoundary == 3) {
     boundary = new RomboidBoundary(
       system.canvas.getMinX(), 
@@ -107,9 +120,33 @@ void keyPressed()
 {
   if (key == ' ')
     saveFrame("tests/####.png");
+  else if (key == 'h')
+    saveHiRes(2);
 }
 
 void mousePressed()
 {
   reset();
+}
+
+void saveHiRes(int scaleFactor) {
+  String name = str(year()) + str(month()) + str(day()) + str(hour()) + str(minute()) + str(second());
+  //PGraphics hires = createGraphics(width*scaleFactor, height*scaleFactor, PDF, name + ".pdf");
+  PGraphics hires = createGraphics(width*scaleFactor, height*scaleFactor, SVG, name + ".svg");
+  hires.beginDraw();
+  hires.scale(scaleFactor);
+  hires.curveDetail(8);
+  hires.curveTightness(0);
+  hires.smooth(16);
+  hires.background(this.systems.get(0).bgColor);
+  drawBackground(hires);
+  for (int i = 0; i < amountOfSystems; i++) {
+    System system = systems.get(i);
+    system.distributeFood();
+    system.computeCellSplits();
+    system.updateCellForces();
+    system.drawWithCurves(hires);
+  }
+  hires.dispose();
+  hires.endDraw();
 }

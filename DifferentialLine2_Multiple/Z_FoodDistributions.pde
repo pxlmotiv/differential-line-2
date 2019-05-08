@@ -18,9 +18,9 @@ void byCurvature(System system) {
     PVector link2 = PVector.sub(c.links.get(1).position, c.position);
     float a = PVector.angleBetween(link1, link2);
 
-    if (a < 1)
+    if (a < 1.5) {
       c.food += random(1, 5);
-    else
-      c.food += 0.5;
+    } else
+      c.food += 0.25;
   }
 }
