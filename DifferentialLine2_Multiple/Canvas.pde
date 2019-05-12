@@ -23,6 +23,24 @@ class Canvas
     g.rect(origin.x, origin.y, _width, _height);
   }
 
+  void drawGradientAtLimits(PGraphics g, color[] colors) {    
+    g.beginShape();
+    
+    g.fill(colors[0]);
+    g.vertex(origin.x, origin.y);
+    
+    g.fill(colors[2]);
+    g.vertex(origin.x+_width, origin.y);
+    
+    g.fill(colors[1]);
+    g.vertex(origin.x+_width, origin.y+_height);
+    
+    g.fill(colors[3]);
+    g.vertex(origin.x, origin.y+_height);
+    
+    g.endShape();
+  }
+
   float getMinX() {
     return origin.x;
   }
@@ -43,7 +61,7 @@ class Canvas
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
 
-    return map(minSide, 100, maxSide, 5, 30);
+    return map(minSide, 100, maxSide, 4, 20);
   }
 
   float suggestRepulsionStrength() {
@@ -57,7 +75,7 @@ class Canvas
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
 
-    return map(minSide, 100, maxSide, 1.75, 10);
+    return map(minSide, 100, maxSide, 1.5, 8);
   }
 
   float suggestPlanarFactor() {
@@ -71,14 +89,14 @@ class Canvas
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
 
-    return map(minSide, 100, maxSide, 0.2, 1.0);
+    return map(minSide, 100, maxSide, 0.1, 1.0);
   }
 
   int suggestStartingNodes() {
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
 
-    return round(map(minSide, 100, maxSide, 48, 64));
+    return round(map(minSide, 100, maxSide, 45, 66));
   }
 
   int suggestFoodThreshold() {

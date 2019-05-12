@@ -54,9 +54,9 @@ class ColorPaletteManager
   {
     color[] colors = palettes[index];
 
-    color c1 = lerpColor(colors[0], colors[1], random(0.15, 0.85));
-    color c2 = lerpColor(colors[1], colors[2], random(0.15, 0.85));
-    color c3 = lerpColor(colors[2], colors[0], random(0.15, 0.85));
+    color c1 = lerpColor(colors[0], colors[1], random(1));
+    color c2 = lerpColor(colors[1], colors[2], random(1));
+    color c3 = lerpColor(colors[2], colors[0], random(1));
 
     int order = round(random(2));
 

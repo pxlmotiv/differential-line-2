@@ -22,3 +22,5 @@ DifferentialLine2_Multiple/video3/
 *.svg
 
 *.pdf
+
+tests/

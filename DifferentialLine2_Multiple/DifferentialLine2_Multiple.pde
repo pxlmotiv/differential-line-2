@@ -7,12 +7,12 @@ ColorPaletteManager paletteMgr;
 
 void setup()
 {
-  size(1600, 900, P3D);
+  size(960, 960, P3D);
   //fullScreen(P3D);
   curveDetail(8);
   curveTightness(0);
   smooth(16);
-
+  
   reset();
 }
 
@@ -81,28 +81,49 @@ void reset()
 void drawBackground(PGraphics g) {
   for (int i = 0; i < amountOfSystems; i++) {
     System system = systems.get(i);
-    system.drawBackground(g);
+    //system.drawBackground(g);
+    system.drawGradientBackground(g);
   }
 }
 
 Boundary buildBoundary(System system) {
-  int choosenBoundary = round(random(-0.49, 3.49));
+  int choosenBoundary = round(random(-0.499, 4.499));
+  
   Boundary boundary;
+  
   if (choosenBoundary == 0) {
+    
     boundary = new CircularBoundary(system.start.x, system.start.y, min(system.canvas._width, system.canvas._height) * random(0.33, 0.5));
+    
   } else if (choosenBoundary == 1) {
+    
     float margin = min(system.canvas._width*0.1, system.canvas._height*0.1);
+    
     boundary = new RectangularBoundary(
       system.canvas.getMinX() + margin, 
       system.canvas.getMinY() + margin, 
       system.canvas.getMaxX() - margin, 
       system.canvas.getMaxY() - margin
       );
+      
   } else if (choosenBoundary == 2) {
+    
     float offset = round(random(6)) * (PI/6.0);
+    
     float s = min(system.canvas._width, system.canvas._height) * 0.5;
+    
     boundary = new TriangularBoundary(system.start.x, system.start.y, s, offset);
+    
   } else if (choosenBoundary == 3) {
+    
+    float offset = (random(6)) * (PI/6.0);
+    
+    float s = min(system.canvas._width, system.canvas._height) * 0.25;
+    
+    boundary = new PoligonBoundary(system.start.x, system.start.y, s, offset, round(random(4, 8)));
+      
+  } else if (choosenBoundary == 4) {
+    
     boundary = new RomboidBoundary(
       system.canvas.getMinX(), 
       system.canvas.getMinY(), 
@@ -110,16 +131,18 @@ Boundary buildBoundary(System system) {
       system.canvas.getMinY() + system.canvas._height*0.5, 
       system.canvas.getMaxX(), 
       system.canvas.getMaxY());
+      
   } else {
     boundary = new RandomLinesBoundary();
   }
+  
   return boundary;
 }
 
 void keyPressed()
 {
   if (key == ' ')
-    saveFrame("tests/####.png");
+    saveFrame("../tests/####.png");
   else if (key == 'h')
     saveHiRes(2);
 }
@@ -132,7 +155,7 @@ void mousePressed()
 void saveHiRes(int scaleFactor) {
   String name = str(year()) + str(month()) + str(day()) + str(hour()) + str(minute()) + str(second());
   //PGraphics hires = createGraphics(width*scaleFactor, height*scaleFactor, PDF, name + ".pdf");
-  PGraphics hires = createGraphics(width*scaleFactor, height*scaleFactor, SVG, name + ".svg");
+  PGraphics hires = createGraphics(width*scaleFactor, height*scaleFactor, SVG, "../vectorized results/" + name + ".svg");
   hires.beginDraw();
   hires.scale(scaleFactor);
   hires.curveDetail(8);

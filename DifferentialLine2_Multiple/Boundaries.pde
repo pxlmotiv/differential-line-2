@@ -41,7 +41,7 @@ public class CircularBoundary extends Boundary
     float dsq = distSq(cell.position, new PVector(x, y));
     return r*r >= dsq;
   }
-  
+
   public int getMaxCellsAllowed(float restLength) {
     float rr = r / restLength*1.2;
     return floor(PI * rr * rr);
@@ -71,11 +71,11 @@ public class RomboidBoundary extends Boundary
 
     return !touchedTopRight && !touchedBottomRight && !touchedBottomLeft && !touchedTopLeft;
   }
-  
+
   public int getMaxCellsAllowed(float restLength) {
     float d1 = dist(right.x, right.y, left.x, left.y);
     float d2 = dist(top.x, top.y, bottom.x, bottom.y);
-    
+
     return round((d1*d2)/2.0);
   }
 }
@@ -87,12 +87,14 @@ public class TriangularBoundary extends Boundary
   TriangularBoundary(float startX, float startY, float s, float _offset)
   {
     float offset = _offset;
+
     float x0 = (cos(float(0) / 3 * TWO_PI + offset) * s) + startX;
     float y0 = (sin(float(0) / 3 * TWO_PI + offset) * s) + startY;
     float x1 = (cos(float(1) / 3 * TWO_PI + offset) * s) + startX;
     float y1 = (sin(float(1) / 3 * TWO_PI + offset) * s) + startY;
     float x2 = (cos(float(2) / 3 * TWO_PI + offset) * s) + startX;
     float y2 = (sin(float(2) / 3 * TWO_PI + offset) * s) + startY;
+
     p0 = new PVector(x0, y0);
     p1 = new PVector(x1, y1);
     p2 = new PVector(x2, y2);
@@ -108,17 +110,59 @@ public class TriangularBoundary extends Boundary
 
     return !touchedp0 && !touchedp1 && !touchedp2;
   }
-  
+
   public int getMaxCellsAllowed(float restLength) {
-    // p0.x(p1.y-p2.y) + p1.x(p0.y-p2.y) + p2.x(p0.y-p1.y) all divided by 2
     float p0x = p0.x / restLength;
     float p0y = p0.y / restLength;
     float p1x = p1.x / restLength;
     float p1y = p1.y / restLength;
     float p2x = p2.x / restLength;
     float p2y = p2.y / restLength;
-    
+
     return round(abs( (p0x*(p1y-p2y) + p1x*(p0y-p2y) + p2x*(p0y-p1y) ) / 2));
+  }
+}
+
+public class PoligonBoundary extends Boundary
+{
+  PVector[] vertices;
+  int _sides;
+  float size;
+
+  PoligonBoundary(float startX, float startY, float s, float _offset, int sides)
+  {
+    vertices = new PVector[sides];
+    _sides = sides;
+    size = s;
+
+    float offset = _offset;
+
+    for (int i = 0; i < sides; i++) {
+      float x = (cos(float(i) / sides * TWO_PI + offset) * s) + startX;
+      float y = (sin(float(i) / sides * TWO_PI + offset) * s) + startY;
+      vertices[i] = new PVector(x, y);
+    }
+  }
+
+  public boolean checkCellWithin(Cell cell, PVector target)
+  {
+    PVector newPos = PVector.add(cell.position, target);
+
+    boolean touchedASide = false;
+
+    for (int i = 0; i < _sides-1; i++) {
+      touchedASide = DoLinesIntersect(vertices[i], vertices[i+1], cell.position, newPos);
+      if (touchedASide) return false;
+    }
+    
+    touchedASide = DoLinesIntersect(vertices[_sides-1], vertices[0], cell.position, newPos);
+    
+    return !touchedASide;
+  }
+
+  public int getMaxCellsAllowed(float restLength) {
+    float rr = size / restLength * 1.3;
+    return floor(PI * rr * rr);
   }
 }
 
@@ -150,7 +194,7 @@ public class RandomLinesBoundary extends Boundary
 
     return true;
   }
-  
+
   public int getMaxCellsAllowed(float restLength) {
     return -1;
   }

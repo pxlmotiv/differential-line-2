@@ -77,15 +77,29 @@ class System { //<>//
     g.popStyle();
   }
 
+  void drawGradientBackground(PGraphics g) {
+    g.pushStyle();
+    g.noStroke();
+    color[] colors = new color[] { 
+      lerpColor(bgColor, #000000, 0.4), 
+      lerpColor(bgColor, #ffffff, 0.4), 
+      bgColor, 
+      bgColor
+    };
+    canvas.drawGradientAtLimits(g, colors);
+    g.popStyle();
+  }
+
   void drawWithCurves(PGraphics g) {
-    drawBackground(g);
+    //drawBackground(g);
+    drawGradientBackground(g);
 
     boolean reachedEnd = false;
 
     float alpha = 255;
 
     g.strokeWeight(1);
-    g.stroke(strokeColor, alpha*3);    
+    g.stroke(strokeColor, alpha);    
     g.fill(fillColor, alpha);
     //noFill();
 
@@ -125,6 +139,7 @@ class System { //<>//
 
   private void arrange() {
     cells = arrangeInCircle(this);
+    //cells = arrangeInEllipse(this);
     //cells = arrangeInSpikes(this);
   }
 }
