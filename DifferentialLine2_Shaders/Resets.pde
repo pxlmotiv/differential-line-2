@@ -1,0 +1,95 @@
+void reset()
+{
+  systems = new ArrayList<System>();
+
+  paletteMgr = new ColorPaletteManager();
+
+  int cpIndex = floor(random(paletteMgr.palettes.length));  
+
+  color[] palette = paletteMgr.getAdjustedColorPalette(cpIndex);
+
+  ArrayList<Canvas> canvases = CreateCanvases(0, 0, width, height, null);
+
+  amountOfSystems = canvases.size();
+
+  background(palette[2]);
+
+  for (int i = 0; i < amountOfSystems; i++) {
+    Canvas canvas = canvases.get(i);
+
+    float springFactor = canvas.suggestSpringFactor();
+    float planarFactor = canvas.suggestPlanarFactor();
+    float repulsionStrength = canvas.suggestRepulsionStrength();
+    float radiusOfInfluence = canvas.suggestRadiusOfInfluece();    
+    float restLength = canvas.suggestRestLength();
+
+    System system = new System(springFactor, planarFactor, 1, repulsionStrength, radiusOfInfluence, restLength);
+    system.canvas = canvas;
+    system.start = system.canvas.getMidpoint();
+
+    palette = paletteMgr.getAdjustedColorPalette(cpIndex);
+
+    system.setColors(palette[0], palette[1], palette[2]);
+
+    Boundary boundary = buildBoundary(system);
+    system.setBoundary(boundary);
+
+    int startingNodes = canvas.suggestStartingNodes();
+    int foodThreshold = canvas.suggestFoodThreshold();
+
+    ArrangementSettings arrangeSettings = new ArrangementSettings(startingNodes, system.restLength * 4.5, 0, foodThreshold);
+    system.setArrangementSettings(arrangeSettings);
+
+    system.arrange();
+
+    systems.add(system);
+  }
+
+  drawBackground(this.g);
+}
+
+void resetOneSystem()
+{
+  systems = new ArrayList<System>();
+
+  paletteMgr = new ColorPaletteManager();
+
+  color[] palette = paletteMgr.getRandomColorPalette();
+  
+  ArrayList<Canvas> canvases = new ArrayList<Canvas>();
+  canvases.add(new Canvas(0, 0, width, height));
+  amountOfSystems = 1;
+
+  background(palette[2]);
+
+  for (int i = 0; i < 1; i++) {
+    Canvas canvas = canvases.get(i);
+
+    float springFactor = 0.1;//0.4
+    float planarFactor = 0.1;//0.1
+    float repulsionStrength = 0.125;//0.4
+    float radiusOfInfluence = 35.0;//25.0  
+    float restLength = 2.0;//3.0
+
+    System system = new System(springFactor, planarFactor, 1, repulsionStrength, radiusOfInfluence, restLength);
+    system.canvas = canvas;
+    system.start = system.canvas.getMidpoint();
+    system.shader.set("u_resolution", float(width), float(height));
+
+    palette = paletteMgr.getRandomColorPalette();
+
+    system.setColors(palette[0], palette[1], palette[2]);
+
+    int startingNodes = 48;
+    int foodThreshold = 4;
+
+    ArrangementSettings arrangeSettings = new ArrangementSettings(startingNodes, system.restLength * 4.25, 0, foodThreshold);
+    system.setArrangementSettings(arrangeSettings);
+
+    system.arrange();
+
+    systems.add(system);
+  }
+
+  drawBackground(this.g);
+}
