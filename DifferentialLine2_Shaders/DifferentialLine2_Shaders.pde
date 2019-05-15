@@ -7,14 +7,16 @@ ColorPaletteManager paletteMgr;
 
 void setup()
 {
-  size(1000, 1000, P3D);
+  size(1400, 1050, P3D);
   //fullScreen(P3D);
   curveDetail(8);
   curveTightness(0);
   smooth(16);
+  //blendMode(ADD);
   
-  //reset();
-  resetOneSystem();
+  reset();
+  //resetOneSystem();
+  //resetBigCircularBounds();
 }
 
 void draw()
@@ -27,14 +29,14 @@ void draw()
     system.drawWithCurves(this.g);
   }
   
-  //saveFrame("newvideo3/####.png");
+  //saveFrame("newvideoGen/####.png");
 }
 
 void drawBackground(PGraphics g) {
   for (int i = 0; i < amountOfSystems; i++) {
     System system = systems.get(i);
-    //system.drawBackground(g);
-    system.drawGradientBackground(g);
+    system.drawBackground(g);
+    //system.drawGradientBackground(g);
   }
 }
 
@@ -48,8 +50,9 @@ void keyPressed()
 
 void mousePressed()
 {
-  //reset();
-  resetOneSystem();
+  reset();
+  //resetOneSystem();
+  //resetBigCircularBounds();
 }
 
 void saveHiRes(int scaleFactor) {

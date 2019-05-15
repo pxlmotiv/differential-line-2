@@ -119,7 +119,7 @@ public class TriangularBoundary extends Boundary
     float p2x = p2.x / restLength;
     float p2y = p2.y / restLength;
 
-    return round(abs( (p0x*(p1y-p2y) + p1x*(p0y-p2y) + p2x*(p0y-p1y) ) / 2));
+    return round(abs( (p0x*(p1y-p2y) + p1x*(p0y-p2y) + p2x*(p0y-p1y) ) / 2.1));
   }
 }
 
@@ -161,7 +161,7 @@ public class PoligonBoundary extends Boundary
   }
 
   public int getMaxCellsAllowed(float restLength) {
-    float rr = size / restLength * 1.3;
+    float rr = size / (restLength * 1.4);
     return floor(PI * rr * rr);
   }
 }

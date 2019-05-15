@@ -61,7 +61,7 @@ class Canvas
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
 
-    return map(minSide, 100, maxSide, 4, 20);
+    return map(minSide, 100, maxSide, 5, 25);
   }
 
   float suggestRepulsionStrength() {
@@ -75,7 +75,7 @@ class Canvas
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
 
-    return map(minSide, 100, maxSide, 1.5, 8);
+    return map(minSide, 100, maxSide, 1.75, 6);
   }
 
   float suggestPlanarFactor() {
@@ -89,20 +89,20 @@ class Canvas
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
 
-    return map(minSide, 100, maxSide, 0.1, 1.0);
+    return map(minSide, 100, maxSide, 0.05, 0.8);
   }
 
   int suggestStartingNodes() {
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
 
-    return round(map(minSide, 100, maxSide, 45, 66));
+    return round(map(minSide, 100, maxSide, 42, 66));
   }
 
   int suggestFoodThreshold() {
     float minSide = min(_width, _height);
     float maxSide = min(width, height);
 
-    return round(map(minSide, 100, maxSide, 3, 20));
+    return round(map(minSide, 100, maxSide, 3, 9));
   }
 }

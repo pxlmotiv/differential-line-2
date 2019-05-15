@@ -114,17 +114,18 @@ class System { //<>//
   }
 
   void drawWithCurves(PGraphics g) {
-    shader.set("u_time", frameCount / 10.0);
+    //shader.set("u_time", frameCount / 10.0);
     
-    //drawBackground(g);
-    drawShaderBackground(g);
+    drawBackground(g);
+    //drawShaderBackground(g);
     //drawGradientBackground(g);    
     
     g.pushStyle();
     float alpha = 255;
     g.strokeWeight(1);
     g.stroke(strokeColor, alpha);
-    g.fill(fillColor, alpha);    
+    g.fill(fillColor, alpha);
+    //g.noFill();
     //g.shader(shader);
     g.shape(buildShape());
     g.resetShader();
@@ -182,6 +183,7 @@ class System { //<>//
   private void arrange() {
     cells = arrangeInCircle(this);
     //cells = arrangeInEllipse(this);
+    //cells = arrangeInStrip(this);
     //cells = arrangeInSpikes(this);
   }
 }
